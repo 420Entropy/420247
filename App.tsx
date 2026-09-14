@@ -1,8 +1,17 @@
 import React from "react";
 
-// --- 27D Trinity Keystore System ---
+/**
+ * 27D Trinity Keystore System
+ *
+ * Provides cryptographic salt vectors for quantum state initialization.
+ * Uses CSPRNG (crypto.getRandomValues) to prevent predictable salt values (CWE-338).
+ */
 export const TrinityKeystore = {
   getVector: () => {
+    /**
+     * Generates a cryptographically secure random string salt using base-36 encoding.
+     * Uses crypto.getRandomValues() across browser and Node.js environments.
+     */
     const salt = () => {
       const array = new Uint32Array(1);
       const cryptoObj =
@@ -21,6 +30,7 @@ export const TrinityKeystore = {
       }
       return array[0].toString(36);
     };
+
     return {
       alpha: `α-${salt()}`,
       beta: `β-${salt()}`,
