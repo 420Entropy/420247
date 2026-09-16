@@ -1,6 +1,13 @@
 import React from "react";
 
 // --- 27D Trinity Keystore System ---
+/**
+ * TrinityKeystore provides cryptographic vector generation for keystore operations.
+ *
+ * Security Note: Uses CSPRNG (crypto.getRandomValues) rather than PRNG (Math.random)
+ * to comply with CWE-338 and ensure cryptographically secure salt generation across
+ * browser (window.crypto) and Node.js (globalThis.crypto) environments.
+ */
 export const TrinityKeystore = {
   getVector: () => {
     const salt = () => {
