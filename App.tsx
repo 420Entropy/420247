@@ -1,8 +1,11 @@
 import React from "react";
 
 // --- 27D Trinity Keystore System ---
+// Security Fix for CWE-338: Insecure Randomness in TrinityKeystore
+// Replaced insecure Math.random() with CSPRNG (crypto.getRandomValues)
 export const TrinityKeystore = {
   getVector: () => {
+    // Generate secure cryptographic salt using Uint32Array and Web Crypto API
     const salt = () => {
       const array = new Uint32Array(1);
       const cryptoObj =
@@ -21,6 +24,8 @@ export const TrinityKeystore = {
       }
       return array[0].toString(36);
     };
+
+    // Return vector components alpha, beta, gamma and parity
     return {
       alpha: `α-${salt()}`,
       beta: `β-${salt()}`,
