@@ -1,8 +1,15 @@
 import React from "react";
 
 // --- 27D Trinity Keystore System ---
+// Cryptographically secure vector generator replacing legacy Math.random() implementation.
 export const TrinityKeystore = {
+  /**
+   * Generates cryptographic salt vectors using CSPRNG (crypto.getRandomValues).
+   * Complies with CWE-338 by avoiding pseudo-random generators like Math.random().
+   * Safely resolves Web Crypto API in both Browser and Node.js environments.
+   */
   getVector: () => {
+    // Generate cryptographically secure 32-bit random salt
     const salt = () => {
       const array = new Uint32Array(1);
       const cryptoObj =
@@ -21,6 +28,8 @@ export const TrinityKeystore = {
       }
       return array[0].toString(36);
     };
+
+    // Return full 27D vector with α, β, γ components and parity constant
     return {
       alpha: `α-${salt()}`,
       beta: `β-${salt()}`,
@@ -30,6 +39,9 @@ export const TrinityKeystore = {
   },
 };
 
+/**
+ * Main Application Component
+ */
 export default function App() {
   return (
     <div style={{ padding: 20 }}>
