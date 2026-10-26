@@ -6,7 +6,7 @@ import * as THREE from "three";
  * MicrotubuleTorus models hypothesized quantum-coherent structures within neurons.
  * This component is optimized using InstancedMesh to minimize draw calls.
  */
-const MicrotubuleTorus = ({
+export const MicrotubuleTorus = ({
   radius,
   count = 360,
   offset = 0,
@@ -19,8 +19,9 @@ const MicrotubuleTorus = ({
   color?: string;
   speed?: number;
 }) => {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const meshRef = useRef<THREE.InstancedMesh>(null!);
   const tempObject = useMemo(() => new THREE.Object3D(), []);
+  const timeRef = useRef(0);
 
   const cubes = useMemo(() => {
     const arr = [];
@@ -33,10 +34,11 @@ const MicrotubuleTorus = ({
     return arr;
   }, [radius, count, offset]);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (!meshRef.current) return;
 
-    const time = state.clock.getElapsedTime() * speed;
+    timeRef.current += delta * speed;
+    const time = timeRef.current;
 
     for (let i = 0; i < cubes.length; i++) {
       const cube = cubes[i];
@@ -77,3 +79,5 @@ export const QuantumScene = () => {
     </group>
   );
 };
+
+export default QuantumScene;
